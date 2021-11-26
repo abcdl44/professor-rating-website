@@ -17,8 +17,8 @@ db = MongoEngine()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
 
-# import blueprints here
-# from ...
+from .not_users.routes import not_users
+from .users.routes import users
 
 def page_not_found(e):
     return render_template("404.html"), 404

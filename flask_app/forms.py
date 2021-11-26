@@ -56,12 +56,12 @@ class UpdateUsernameForm(FlaskForm):
     submit = SubmitField("Update Username")
 
 # Password Update Form
-class UpdateUsernameForm(FlaskForm):
+class UpdatePasswordForm(FlaskForm):
     password = StringField("New Password", validators=[InputRequired(), Length(min=1, max=30)])
     submit = SubmitField("Update Password")
 
 # Email Update Form
-class UpdateUsernameForm(FlaskForm):
+class UpdateEmailForm(FlaskForm):
     email = StringField("New Email", validators=[InputRequired(), Email()])
     submit = SubmitField("Update email")
 
