@@ -8,6 +8,9 @@
             <ul class="navbar-nav ml-auto">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('not_users.add_new_professor') }}">Add Professor</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.account') }}">Account</a>
                 </li>
                 <li class="nav-item">

@@ -21,8 +21,7 @@ def index():
 
 @not_users.route("/search_results/<search>", methods=["GET"])
 def search_results(search):
-    # not sure how we're doing search results
-    results = None
+    results = Professor.objects.search_text(search)
     return render_template("search_results.html", results = results)
 
 @not_users.route("/professor/<professor>", methods=["GET", "POST"])
@@ -53,6 +52,7 @@ def professor_page(professor):
     return render_template("professor_page.html", professor=professor, reviews = reviews, form = form)
 
 @not_users.route("/add_new_professor", methods=["GET", "POST"])
+@login_required
 def add_new_professor():
     form = AddNewProfessorForm()
     if form.validate_on_submit() and current_user.is_authenticated:
