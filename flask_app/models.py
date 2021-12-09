@@ -17,10 +17,10 @@ class Review(db.Document):
     commenter = db.ReferenceField(User, required=True)
     professor = db.StringField(required=True, unique=True)
     date = db.StringField(required=True)
-    rating = db.IntegerField(required=True)
+    rating = db.IntField(required=True)
     text = db.StringField(max_length=500)
 
 class Professor(db.Document):
     name = db.StringField(required=True, unique=True)
-    total_score = db.IntegerField(required=True)
-    num_reviewers = db.IntegerField(required=True)
+    total_score = db.IntField(required=True)
+    num_reviewers = db.IntField(required=True)

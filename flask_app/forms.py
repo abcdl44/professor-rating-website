@@ -11,8 +11,7 @@ from wtforms.validators import (
     Email,
     EqualTo,
     ValidationError,
-    ValidateLessThanOrEqual,
-    ValidateGreaterThanOrEqual,
+    NumberRange,
     Optional
 )
 
@@ -67,7 +66,7 @@ class UpdateEmailForm(FlaskForm):
 
 # Submit Review about Professor
 class SubmitReviewForm(FlaskForm):
-    rating = IntegerField("Rating", validators=[InputRequired(), ValidateGreaterThanOrEqual(value=1), ValidateLessThanOrEqual(value=10)])
+    rating = IntegerField("Rating", validators=[InputRequired(), NumberRange(min=1, max=10, message="Value between 1 and 10")])
     text = TextAreaField("Comment", Length(max=500), Optional())
     submit = SubmitField("Add Review")
 

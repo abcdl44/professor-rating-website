@@ -31,6 +31,8 @@ def create_app(test_config=None):
     bcrypt.init_app(app)
 
     app.register_error_handler(404, page_not_found)
+    app.register_blueprint(users)
+    app.register_blueprint(not_users)
 
     login_manager.login_view = "users.login"
 
