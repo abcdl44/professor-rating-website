@@ -47,7 +47,7 @@ def logout():
 @users.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        redirect(url_for("users.account"))
+        return redirect(url_for("users.account"))
     
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -60,13 +60,14 @@ def register():
 @users.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        redirect(url_for("users.account"))
+        return redirect(url_for("users.account"))
     
     form = LoginForm()
     if form.validate_on_submit():
         user = User.objects(username=form.username.data).first()
         if user is not None and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
+            return redirect(url_for("users.account"))
         else:
             flash("Invalid login credentials.")
             return redirect(url_for('users.login'))
