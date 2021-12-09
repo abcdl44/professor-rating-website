@@ -1,0 +1,47 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        {# Display any error messages #}
+        {% if error %} 
+        Usernmae doesn't exist
+        {%endif%}
+    </div>
+</div>
+{% if not error%}
+<div class="row">
+    <div class="col">
+        {# User's Profile Picture #}
+        <img class="propic" src="data:image/png;base64,{{image}}" alt="image">
+    </div>
+    <div class="col">
+        {# Indicate which user's reviews we're looking at #}
+        <h4>Reviews by {{users.username}}</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {# Show all reviews made by the user #}
+        <h1> Reviews <small class="float-right">{{ reviews|length }} reviews</small></h1>
+        <ul class="media-list">
+        {% for review in reviews %}
+        <li class="media review-item">
+            <img class="mr-3 comment-pic" src="data:image/png;base64,{{review.image}}" alt="">
+            <div class="media-body">
+            <span class="float-right">
+                <small>{{ review.date }}</small>
+            </span>
+            <a href="{{ url_for('movie_detail', movie_id=review.imdb_id) }}">
+                <strong>@{{ review.movie_title }}</strong>
+            </a>
+            <p>
+                {{ review.content }}
+            </p>
+            </div>
+        </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
