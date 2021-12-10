@@ -3,10 +3,9 @@
 {% if results|length %}
     <div class="container-fluid">
     {% for result in results %}
-        <div class="media">
-            <div class="media-body">
-            <h5 class="mt-0"><a href="{{ url_for('not_users.professor_page', professor=result.name) }}">{{ result.name }}</a> </h5>
-            </div>
+        <div class="row">
+            <h5><a href="{{ url_for('not_users.professor_page', professor=result.name) }}">{{ result.name }}</a> </h5>
+            <!-- class="mt-0" -->
         </div>
     {% endfor %}
 </div>
