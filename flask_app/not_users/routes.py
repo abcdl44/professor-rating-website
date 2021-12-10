@@ -59,14 +59,14 @@ def professor_page(professor):
 @login_required
 def add_new_professor():
     form = AddNewProfessorForm()
-    if form.validate_on_submit() and current_user.is_authenticated:
+    if form.validate_on_submit():
         new_professor = Professor(
             name = form.name.data,
             total_score = 0,
             num_reviewers = 0
         )
         new_professor.save()
-        return redirect(url_for("professor_page", professor=new_professor.name))
+        return redirect(url_for("not_users.index"))
         # (professor_page(form.name.data))
 
     return render_template("add_new_professor.html", form = form)
