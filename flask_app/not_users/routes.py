@@ -21,7 +21,11 @@ def index():
 
 @not_users.route("/search_results/<search>", methods=["GET"])
 def search_results(search):
-    results = Professor.objects.search_text(search)
+    # results = Professor.objects.search_text(search)
+    results = None
+    # if results is None:
+        # return render_template("404.html")
+
     return render_template("search_results.html", results = results)
 
 @not_users.route("/professor/<professor>", methods=["GET", "POST"])
