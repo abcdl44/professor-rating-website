@@ -15,7 +15,7 @@ def index():
     form = SearchForm()
 
     if form.validate_on_submit():
-        return redirect(url_for("not_users.search_results"))
+        return redirect(url_for("not_users.search_results", search=form.search_query.data))
 
     return render_template("index.html", form = form)
 
@@ -62,6 +62,7 @@ def add_new_professor():
             num_reviewers = 0
         )
         new_professor.save()
-        return redirect(professor_page(form.name.data))
+        return redirect(url_for("professor_page", professor=new_professor.name))
+        # (professor_page(form.name.data))
 
     return render_template("add_new_professor.html", form = form)
