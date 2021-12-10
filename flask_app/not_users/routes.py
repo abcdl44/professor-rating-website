@@ -22,7 +22,12 @@ def index():
 @not_users.route("/search_results/<search>", methods=["GET"])
 def search_results(search):
     results = Professor.objects.search_text(search)
-    return render_template("search_results.html", results=results)
+    # results = None
+    # if results is None:
+        # return render_template("404.html")
+
+    return render_template("search_results.html", results = results)
+
 
 @not_users.route("/professor/<professor>", methods=["GET", "POST"])
 def professor_page(professor):
@@ -62,6 +67,7 @@ def add_new_professor():
             num_reviewers = 0
         )
         new_professor.save()
-        return redirect(professor_page(form.name.data))
+        return redirect(url_for("professor_page", professor=new_professor.name))
+        # (professor_page(form.name.data))
 
     return render_template("add_new_professor.html", form = form)
