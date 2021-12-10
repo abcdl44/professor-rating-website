@@ -17,7 +17,7 @@ def index():
     if form.validate_on_submit():
         return redirect(url_for("not_users.search_results", search=form.search_query.data))
 
-    return render_template("index.html", form = form)
+    return render_template("index.html", form=form)
 
 @not_users.route("/search_results/<search>", methods=["GET"])
 def search_results(search):
@@ -27,6 +27,7 @@ def search_results(search):
         # return render_template("404.html")
 
     return render_template("search_results.html", results = results)
+
 
 @not_users.route("/professor/<professor>", methods=["GET", "POST"])
 def professor_page(professor):

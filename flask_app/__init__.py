@@ -30,6 +30,9 @@ def create_app(test_config=None):
     login_manager.init_app(app)
     bcrypt.init_app(app)
 
+    if test_config is not None:
+        app.config.update(test_config)
+
     app.config["MONGODB_HOST"] = "mongodb://localhost:27017/not_sure"
     app.config["SECRET_KEY"] = os.urandom(16)
 
