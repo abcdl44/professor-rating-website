@@ -11,10 +11,6 @@
 {% if not error%}
 <div class="row">
     <div class="col">
-        {# User's Profile Picture #}
-        <img class="propic" src="data:image/png;base64,{{image}}" alt="image">
-    </div>
-    <div class="col">
         {# Indicate which user's reviews we're looking at #}
         <h4>Reviews by {{users.username}}</h4>
     </div>
@@ -26,12 +22,11 @@
         <ul class="media-list">
         {% for review in reviews %}
         <li class="media review-item">
-            <img class="mr-3 comment-pic" src="data:image/png;base64,{{review.image}}" alt="">
             <div class="media-body">
             <span class="float-right">
                 <small>{{ review.date }}</small>
             </span>
-            <a href="{{ url_for('movie_detail', movie_id=review.imdb_id) }}">
+            <a href="{{ url_for('professor_page', professor=rprofessor.name }}">
                 <strong>@{{ review.movie_title }}</strong>
             </a>
             <p>
