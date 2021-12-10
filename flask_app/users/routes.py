@@ -27,8 +27,7 @@ def account():
         hashed = bcrypt.generate_password_hash(password_form.password.data).decode("utf-8")
         user.modify(password=hashed)
         logout_user()
-        login_user(user)
-        return redirect(url_for('users.account'))
+        return redirect(url_for('users.login'))
     if email_form.submit.data and email_form.validate():
         user = User.objects(username=current_user.get_id()).first()
         user.modify(email=email_form.email.data)
