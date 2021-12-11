@@ -1,9 +1,11 @@
 from flask import Blueprint, redirect, url_for, render_template, flash, request
 from flask_login import current_user, login_required, login_user, logout_user
+from flask_mail import Message
 
 from ..forms import RegistrationForm, LoginForm, UpdateUsernameForm, UpdatePasswordForm, UpdateEmailForm
 from ..models import User, Review
 from .. import bcrypt
+from .. import mail
 
 users = Blueprint('users', __name__)
 
@@ -53,7 +55,12 @@ def register():
         hashed = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
         user = User(username=form.username.data, email=form.email.data, password=hashed)
         user.save()
+        
+        msg = Message("Thank you for signing up for the UMD professor rater. If you did not sign up, sucks for you, we don't have email verification!", sender="ProfessorRater@gmail.com")
+        msg.recipients=[form.email.data]
+        mail.send(msg)
         return redirect(url_for("users.login"))
+
     return render_template("register.html", form=form)
 
 @users.route("/login", methods=["GET", "POST"])

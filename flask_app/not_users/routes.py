@@ -1,10 +1,13 @@
 # index, professor's pages, add new professor page
 
 from flask import Blueprint, redirect, url_for, render_template, flash, request
-from flask_login import current_user, login_required, login_user, logout_user
+from flask_login import current_user, login_required
+from matplotlib import pyplot as plt
+import io
+import base64
 
 from ..forms import AddNewProfessorForm, SearchForm, SubmitReviewForm
-from ..models import Review, User, Professor
+from ..models import Review, Professor
 from ..utils import current_time
 from .. import db
 
@@ -14,10 +17,28 @@ not_users = Blueprint('not_users', __name__)
 def index():
     form = SearchForm()
 
+    data = Professor.objects().order_by('num_reviewers')
+    names = []
+    ratings = []
+    for i in data:
+        names.append(i.name)
+        ratings.append(i.total_score/i.num_reviewers)
+        if len(names) == 5:
+            break
+    fig = plt.figure()
+    plt.bar(names, ratings, width=.03)
+    plt.ylabel("Ratings")
+    plt.title("Most rated professors")
+    
+    my_stringIObytes = io.BytesIO()
+    fig.savefig(my_stringIObytes, format='png')
+    my_stringIObytes.seek(0)
+    img = base64.b64encode(my_stringIObytes.getvalue()).decode('utf-8')
+
     if form.validate_on_submit():
         return redirect(url_for("not_users.search_results", search=form.search_query.data))
 
-    return render_template("index.html", form=form)
+    return render_template("index.html", form=form, img=img)
 
 @not_users.route("/search_results/<search>", methods=["GET"])
 def search_results(search):
@@ -31,7 +52,7 @@ def professor_page(professor):
 
     if form.validate_on_submit() and current_user.is_authenticated:
         new_review = Review(
-            commenter = current_user.get_current_object(),
+            commenter = current_user._get_current_object(),
             professor = professor,
             date = current_time(),
             rating = form.rating.data,
@@ -40,15 +61,13 @@ def professor_page(professor):
         new_review.save()
 
         # idk if this actually works
-        prof = Professor.objects(name = professor)
-        prof.total_score += form.rating.data
-        prof.num_reviewers += 1
-        prof.save()
+        Professor.objects(name = professor).update_one(inc__total_score=form.rating.data, inc__num_reviewers=1)
 
         return redirect(url_for(request.path))
 
-    professor = Professor.objects(name=professor).first()
     reviews = Review.objects(professor=professor)
+    professor = Professor.objects(name=professor).first()
+    
 
     return render_template("professor_page.html", professor=professor, reviews = reviews, form = form)
 

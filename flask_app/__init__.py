@@ -9,6 +9,7 @@ from flask_login import (
 )
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
+from flask_mail import Mail
 
 from datetime import datetime
 import os
@@ -16,6 +17,7 @@ import os
 db = MongoEngine()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
+mail = Mail()
 
 from .not_users.routes import not_users
 from .users.routes import users
@@ -25,7 +27,8 @@ def page_not_found(e):
 
 def create_app(test_config=None):
     app = Flask(__name__)
-
+    
+    mail.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     bcrypt.init_app(app)
