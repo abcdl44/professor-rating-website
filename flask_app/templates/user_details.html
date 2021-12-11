@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col">
         {# Indicate which user's reviews we're looking at #}
-        <h4>Reviews by {{users.username}}</h4>
+        <h4>Reviews by {{user.username}}</h4>
     </div>
 </div>
 <div class="row">
@@ -26,11 +26,11 @@
             <span class="float-right">
                 <small>{{ review.date }}</small>
             </span>
-            <a href="{{ url_for('professor_page', professor=rprofessor.name }}">
-                <strong>@{{ review.movie_title }}</strong>
+            <a href="{{ url_for('not_users.professor_page', professor=review.professor) }}">
+                <strong>@{{ review.professor }}</strong>
             </a>
             <p>
-                {{ review.content }}
+                {{ review.text }}
             </p>
             </div>
         </li>

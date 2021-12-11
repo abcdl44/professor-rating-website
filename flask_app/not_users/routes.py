@@ -31,7 +31,7 @@ def professor_page(professor):
 
     if form.validate_on_submit() and current_user.is_authenticated:
         new_review = Review(
-            commenter = current_user.get_current_object(),
+            commenter = current_user._get_current_object(),
             professor = professor,
             date = current_time(),
             rating = form.rating.data,
@@ -40,17 +40,15 @@ def professor_page(professor):
         new_review.save()
 
         # idk if this actually works
-        prof = Professor.objects(name = professor)
-        prof.total_score += form.rating.data
-        prof.num_reviewers += 1
-        prof.save()
+        Professor.objects(name = professor).update_one(inc__total_score=form.rating.data, inc__num_reviewers=1)
+        # prof.save()
 
-        return redirect(url_for(request.path))
+        return redirect(url_for("not_users.professor_page", professor=professor))
 
-    professor = Professor.objects(name=professor).first()
     reviews = Review.objects(professor=professor)
+    professor_object = Professor.objects(name=professor).first()
 
-    return render_template("professor_page.html", professor=professor, reviews = reviews, form = form)
+    return render_template("professor_page.html", professor=professor_object, reviews = reviews, form = form)
 
 @not_users.route("/add_new_professor", methods=["GET", "POST"])
 @login_required

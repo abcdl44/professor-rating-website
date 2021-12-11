@@ -2,9 +2,74 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <h2>HI</h2>
+        <h1>Professor <b>{{professor.name}}</b></h1>
     </div>
 
-</div>
 
-{% endblock %}
+    {% if reviews|length %}
+        <div class="row">
+            <div class="col-md-12">
+            <h1> Reviews <small class="float-right">{{ reviews|length }} reviews</small></h1>
+            <ul class="media-list">
+                {% for review in reviews %}
+                <li class="media review-item">
+                <div class="media-body">
+                    <span class="float-right">
+                    <small>{{ review.date }}</small>
+                    </span>
+                    <a href="{{ url_for('users.user_details', username=review.commenter.username) }}">
+                    <strong>@{{ review.commenter.username }}</strong>
+                    </a>
+                    <p>
+                    {{ review.text }}
+                    </p>
+                </div>
+                </li>
+                {% endfor %}
+            </ul>
+            </div>
+        </div>
+    {% else %}
+        <h2><b>No Reviews</b></h2>
+    {% endif %}
+
+
+    {% if current_user.is_authenticated %}
+        <div class="row">
+            <div class="col">
+                <form method="POST" action="">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        {{ form.rating.label(class="form-control-label green-text") }}
+                        {{ form.rating(class="form-control form-control-md") }}
+        
+                        {% if form.rating.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {% for error in form.rating.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.text.label(class="form-control-label") }}
+                        {{ form.text(class="form-control form-control-lg") }}
+        
+                        {% if form.text.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {% for error in form.text.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.submit(class="form-control form-control-lg") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock content %}
