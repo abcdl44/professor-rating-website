@@ -63,13 +63,13 @@ def professor_page(professor):
         # idk if this actually works
         Professor.objects(name = professor).update_one(inc__total_score=form.rating.data, inc__num_reviewers=1)
 
-        return redirect(url_for(request.path))
+        return redirect(url_for("not_users.professor_page", professor=professor))
 
     reviews = Review.objects(professor=professor)
-    professor = Professor.objects(name=professor).first()
     
+    professor_object = Professor.objects(name=professor).first()
 
-    return render_template("professor_page.html", professor=professor, reviews = reviews, form = form)
+    return render_template("professor_page.html", professor=professor_object, reviews = reviews, form = form)
 
 @not_users.route("/add_new_professor", methods=["GET", "POST"])
 @login_required
