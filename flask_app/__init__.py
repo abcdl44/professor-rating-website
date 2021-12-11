@@ -28,16 +28,23 @@ def page_not_found(e):
 def create_app(test_config=None):
     app = Flask(__name__)
     
+    app.config["MONGODB_HOST"] = "mongodb://localhost:27017/not_sure"
+    app.config["SECRET_KEY"] = os.urandom(16)
+    app.config['MAIL_SERVER']='smtp.gmail.com'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USERNAME'] = 'ProfessorRater2021@gmail.com'
+    app.config['MAIL_PASSWORD'] = 'Password2021'
+    app.config['MAIL_DEFAULT_SENDER'] = 'ProfessorRater2021@gmail.com'
+    app.config['MAIL_USE_TLS'] = False
+    app.config['MAIL_USE_SSL'] = True
+
+    if test_config is not None:
+        app.config.update(test_config)
+ 
     mail.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     bcrypt.init_app(app)
-
-    if test_config is not None:
-        app.config.update(test_config)
-
-    app.config["MONGODB_HOST"] = "mongodb://localhost:27017/not_sure"
-    app.config["SECRET_KEY"] = os.urandom(16)
 
     app.register_error_handler(404, page_not_found)
     app.register_blueprint(users)

@@ -17,12 +17,15 @@ not_users = Blueprint('not_users', __name__)
 def index():
     form = SearchForm()
 
-    data = Professor.objects().order_by('num_reviewers')
+    data = Professor.objects[:5]
     names = []
     ratings = []
+    print(data)
     for i in data:
+        print("hi hi")
+        print(i)
         names.append(i.name)
-        ratings.append(i.total_score/i.num_reviewers)
+        ratings.append(i.total_score)
         if len(names) == 5:
             break
     fig = plt.figure()
@@ -31,7 +34,7 @@ def index():
     plt.title("Most rated professors")
     
     my_stringIObytes = io.BytesIO()
-    fig.savefig(my_stringIObytes, format='png')
+    plt.savefig(my_stringIObytes, format='png')
     my_stringIObytes.seek(0)
     img = base64.b64encode(my_stringIObytes.getvalue()).decode('utf-8')
 

@@ -56,8 +56,8 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed)
         user.save()
         
-        msg = Message("Thank you for signing up for the UMD professor rater. If you did not sign up, sucks for you, we don't have email verification!", sender="ProfessorRater@gmail.com")
-        msg.recipients=[form.email.data]
+        msg = Message("Thank you for signing up for the UMD professor rater. If you did not sign up, sucks for you, we don't have email verification!", recipients=[form.email.data])
+        msg.body = ":^)"
         mail.send(msg)
         return redirect(url_for("users.login"))
 
