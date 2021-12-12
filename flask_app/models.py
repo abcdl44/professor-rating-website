@@ -7,7 +7,7 @@ def load_user(user_id):
 
 class User(db.Document, UserMixin):
     username = db.StringField(required=True, unique=True)
-    email = db.EmailField(required=True, unique=True)
+    email = db.StringField(required=True, unique=True)
     password = db.StringField(required=True)
 
     def get_id(self):
@@ -15,12 +15,10 @@ class User(db.Document, UserMixin):
 
 class Review(db.Document):
     commenter = db.ReferenceField(User, required=True)
-    professor = db.StringField(required=True, unique=True)
+    professor = db.StringField(required=True, unique=False)
     date = db.StringField(required=True)
     rating = db.IntField(required=True)
     text = db.StringField(max_length=500)
 
 class Professor(db.Document):
     name = db.StringField(required=True, unique=True)
-    total_score = db.IntField(required=True)
-    num_reviewers = db.IntField(required=True)

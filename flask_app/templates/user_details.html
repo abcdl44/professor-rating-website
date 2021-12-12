@@ -1,6 +1,6 @@
 {% extends "header.html" %}
 {% block content %}
-<div class="row">
+<div class="row mt-3">
     <div class="col">
         {# Display any error messages #}
         {% if error %} 
@@ -9,7 +9,7 @@
     </div>
 </div>
 {% if not error%}
-<div class="row">
+<div class="row mt-3">
     <div class="col">
         {# Indicate which user's reviews we're looking at #}
         <h4>Reviews by {{user.username}}</h4>
@@ -27,8 +27,9 @@
                 <small>{{ review.date }}</small>
             </span>
             <a href="{{ url_for('not_users.professor_page', professor=review.professor) }}">
-                <strong>@{{ review.professor }}</strong>
+                <strong>Professor {{ review.professor }}</strong>
             </a>
+            <p>Rated {{ review.rating }} Out of 10</p>
             <p>
                 {{ review.text }}
             </p>

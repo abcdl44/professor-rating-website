@@ -1,18 +1,12 @@
 {% extends "header.html" %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-">
+    <div class="row mt-3">
+        <div class="row-md">
+            <h2>Search for your favorite (or least favorite) professors here!</h2>
+        </div>
+        <div class="row-md">
             <form action="/" class="form-inline my-2 my-lg-0" method="POST">
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-info">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                {% endwith %}
 
                 {{ form.csrf_token }}
                 {{ form.search_query(class="form-control", placeholder="Search") }}
@@ -26,9 +20,6 @@
             {% endif %}
             {{ form.submit(class="btn btn-outline-success") }}
         </div>
-    </div>
-    <div class="row">
-        <h1>Search for your favorite (or least favorite) professors here!</h1>
     </div>
     <div class="row">
         <img class="pic" src="data:image/png;base64,{{img}}">

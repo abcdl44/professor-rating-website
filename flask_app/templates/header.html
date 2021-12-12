@@ -2,10 +2,12 @@
 {% block header %}
 <nav class="navbar navbar-expand-md navbar-light" style="background-color:rgb(87, 103, 204);">
     <a class="navbar-brand" href="{{ url_for('not_users.index') }} ">Home</a>
-
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-            <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('not_users.about') }}">About Us</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto order-md-last">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('not_users.add_new_professor') }}">Add Professor</a>
@@ -15,8 +17,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a>
-                </li>
+                </li>               
                 {% else %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Login to Add Professor</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('users.login') }}">Login</a>
                 </li>
@@ -25,8 +30,6 @@
                 </li>
                 {% endif %}
         </ul>
-
-    </div>
 </nav>
 
 <div class="container">

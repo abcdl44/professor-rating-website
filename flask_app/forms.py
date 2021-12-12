@@ -66,7 +66,7 @@ class UpdateEmailForm(FlaskForm):
 
 # Submit Review about Professor
 class SubmitReviewForm(FlaskForm):
-    rating = IntegerField("Rating", validators=[InputRequired(), NumberRange(min=1, max=10, message="Value between 1 and 10")])
+    rating = IntegerField("Rating out of 10", validators=[InputRequired(), NumberRange(min=1, max=10, message="Value between 1 and 10")])
     text = TextAreaField("Comment", validators=[Length(max=500), Optional()])
     submit = SubmitField("Add Review")
 

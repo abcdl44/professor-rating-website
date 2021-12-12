@@ -22,14 +22,20 @@ def index():
     ratings = []
     print(data)
     for i in data:
-        print("hi hi")
-        print(i)
         names.append(i.name)
-        ratings.append(i.total_score)
-        if len(names) == 5:
-            break
-    fig = plt.figure()
-    plt.bar(names, ratings, width=.03)
+        count = 0
+        sum = 0
+        reviews = Review.objects(professor=i.name)
+        for j in reviews:
+            count += 1
+            sum += j.rating
+        if count == 0:
+            ratings.append(0)
+        else:
+            ratings.append(sum//count)
+    ax = plt.gca()
+    ax.set_ylim([0, 10])
+    plt.bar(names, ratings, color='xkcd:sky blue')
     plt.ylabel("Ratings")
     plt.title("Most rated professors")
     
@@ -59,20 +65,27 @@ def professor_page(professor):
             professor = professor,
             date = current_time(),
             rating = form.rating.data,
-            text = form.text.data
+            text = form.text.data,
         )
         new_review.save()
 
-        # idk if this actually works
-        Professor.objects(name = professor).update_one(inc__total_score=form.rating.data, inc__num_reviewers=1)
-
-        return redirect(url_for("not_users.professor_page", professor=professor))
+        return redirect(request.path)
 
     reviews = Review.objects(professor=professor)
     
     professor_object = Professor.objects(name=professor).first()
 
-    return render_template("professor_page.html", professor=professor_object, reviews = reviews, form = form)
+    count = 0
+    sum = 0
+    reviews = Review.objects(professor=professor)
+    for j in reviews:
+        count += 1
+        sum += j.rating
+    overall = 0
+    if count != 0:
+        overall = sum//count
+
+    return render_template("professor_page.html", professor=professor_object, reviews = reviews, form = form, score = overall)
 
 @not_users.route("/add_new_professor", methods=["GET", "POST"])
 @login_required
@@ -81,11 +94,13 @@ def add_new_professor():
     if form.validate_on_submit():
         new_professor = Professor(
             name = form.name.data,
-            total_score = 0,
-            num_reviewers = 0
         )
         new_professor.save()
-        return redirect(url_for("not_users.index"))
+        return redirect(url_for("not_users.professor_page", professor=form.name.data))
         # (professor_page(form.name.data))
 
     return render_template("add_new_professor.html", form = form)
+
+@not_users.route("/about", methods=["GET"])
+def about():
+    return render_template("about.html")

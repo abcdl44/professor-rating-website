@@ -1,7 +1,7 @@
 {% extends "header.html" %}
 {% block content %}
     <div class="container">
-        <div class="row">
+        <div class="row mt-2">
             <h2>Can't find your professor? Add them here!</h2>
         </div>
         <div class="row">
@@ -9,7 +9,7 @@
                 <form method="POST" action="">
                     {{ form.csrf_token }}
 
-                    <div class="form-group"></div>
+                    <div class="form-group">
                         {{ form.name.label(class="form-control-label") }}
                         {{ form.name(class="form-control") }}
                     </div>
@@ -22,9 +22,9 @@
                         </div>
                     {% endif %}
     
-                    <div class="form-group"></div>
+                    <div class="form-group">
                         {{ form.submit }}
-                    <div class="form-group"></div>
+                    </div>
 
                     </form>
             </div>
