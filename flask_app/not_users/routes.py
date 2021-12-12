@@ -92,10 +92,11 @@ def professor_page(professor):
 def add_new_professor():
     form = AddNewProfessorForm()
     if form.validate_on_submit():
-        new_professor = Professor(
-            name = form.name.data,
-        )
-        new_professor.save()
+        if Professor.objects(name=form.name.data).first() is None:
+            new_professor = Professor(
+                name = form.name.data,
+            )
+            new_professor.save()
         return redirect(url_for("not_users.professor_page", professor=form.name.data))
         # (professor_page(form.name.data))
 
