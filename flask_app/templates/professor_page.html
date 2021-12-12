@@ -21,8 +21,11 @@
                     <small>{{ review.date }}</small>
                     </span>
                     <a href="{{ url_for('users.user_details', username=review.commenter.username) }}">
-                    <strong>@{{ review.commenter.username }}</strong>
+                    <strong>{{ review.commenter.username }}</strong>
                     </a>
+                    <p>
+                        Rated {{review.rating}} out of 10
+                    </p>
                     <p>
                     {{ review.text }}
                     </p>
