@@ -22,7 +22,7 @@ def index():
     ratings = []
     print(data)
     for i in data:
-        names.append(i.name)
+        names.append(i.name[0:6])
         count = 0
         sum = 0
         reviews = Review.objects(professor=i.name)
@@ -38,7 +38,7 @@ def index():
     plt.bar(names, ratings, color='xkcd:sky blue')
     plt.ylabel("Ratings")
     plt.title("Most rated professors")
-    
+
     my_stringIObytes = io.BytesIO()
     plt.savefig(my_stringIObytes, format='png')
     my_stringIObytes.seek(0)
@@ -72,7 +72,7 @@ def professor_page(professor):
         return redirect(request.path)
 
     reviews = Review.objects(professor=professor)
-    
+
     professor_object = Professor.objects(name=professor).first()
 
     count = 0
